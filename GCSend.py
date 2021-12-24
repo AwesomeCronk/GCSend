@@ -1,9 +1,13 @@
 #!/bin/env python3
 
-import sys, argparse, serial
+import time, argparse, serial
 
 def getArgs():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        prog='GCSend',
+        description='A command line GCode sender for GRBL machines',
+        epilog='See https://github.com/AwesomeCronk/GCSend for help'
+    )
     parser.add_argument(
         'port',
         type=str,
@@ -21,10 +25,56 @@ def getArgs():
         default=115200,
         help='baud rate to use'
     )
+    parser.add_argument(
+        '--verbosity',
+        '-v',
+        type=int,
+        default=1,
+        help='set verbosity'
+    )
+    parser.add_argument(
+        '--wait-to-exit',
+        '-w',
+        action='store_true',
+        help='wait for user confirmation before closing the port and exiting'
+    )
     return parser.parse_args()
+
+def initGRBL(machine):
+    machine.write(b'\r\n\r\n')
+    time.sleep(2)
+    machine.flushInput()
 
 if __name__ == '__main__':
     args = getArgs()
-    print('file: {}'.format(args.file))
-    print('port: {}'.format(args.port))
-    print('baud: {}'.format(args.baud))
+    print(dir(args))
+
+    def debug(level, *msg, **otherArgs):
+        if level >= args.verbosity:
+            print(*msg, **otherArgs)
+
+    debug(2, 'file: {}'.format(args.file))
+    debug(2, 'port: {}'.format(args.port))
+    debug(2, 'baud: {}'.format(args.baud))
+    debug(2, 'verbosity: {}'.format(args.verbosity))
+    debug(2, 'wait-to-exit: {}'.format(args.wait_to_exit))
+    
+
+    with open(args.file, 'r') as file:
+        gcodeText = file.read()
+    gcodeCommands = str.splitlines(gcodeText)
+
+    with serial.Serial(args.port, args.baud) as machine:
+        initGRBL(machine)
+        
+        for command in gcodeCommands:
+            commandToSend = command.strip() # Remove leading and trailing whitespace
+            debug(1, 'Send: {}'.format(repr(commandToSend)))
+            machine.write(commandToSend.encode('utf-8'))    # Send gcode command
+            machine.write(b'\n')    # Send newline to signal end of command
+
+            response = machine.readline()    # Get reponse
+            debug(1, 'Receive: {}'.format(repr(response)))
+
+        if args.wait_to_exit:
+            input('Press enter to close port and exit')
