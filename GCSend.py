@@ -110,7 +110,7 @@ if __name__ == '__main__':
             response = recv()
 
             if 'error' in response:
-                debug(0, 'GRBL returned error {}, quitting.'.format(response.split(';')[1]))
+                debug(0, 'GRBL returned error {}, quitting.'.format(response.split(':')[1]))
                 break
 
 
