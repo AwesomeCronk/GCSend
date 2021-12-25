@@ -2,7 +2,7 @@
 GCSend is a command-line GCode sender for GRBL CNC machines. Compatibility with other GCode-based machines is not guaranteed.
 
 # Installation
-GCSend is intended for Linux, but might be easily portable to Windows (i.e. install where you choose, then create a shortcut that is on path or add the installation directory to path.)
+GCSend is intended for Linux, but should be easily portable to Windows (i.e. install where you like, then create a shortcut that is on path or add the installation directory to path.)
 
 ```bash
 cd /usr/local/bin   # installation directory can be changed
@@ -20,7 +20,21 @@ sudo usermod -a -G dialout $whoami
 * `pySerial` module
 
 # Usage
-Install and run `gcsend --help` for usage.
+`usage: GCSend [-h] [--baud BAUD] [--verbosity VERBOSITY] [--wait-to-exit] port file`
+
+A command line GCode sender for GRBL machines
+
+positional arguments:
+  `port`                  port the machine is connected to
+  `file`                  file to be run
+
+optional arguments:
+  `-h, --help`            show this help message and exit
+  `--baud BAUD, -b BAUD`  baud rate to use
+  `--verbosity VERBOSITY, -v VERBOSITY`
+                        set verbosity
+  `--wait-to-exit, -w`    wait for user confirmation before closing the port and exiting
+
 
 # Credits
-GCSend is based on the [`simple_stream.py`](https://github.com/grbl/grbl/blob/master/doc/script/simple_stream.py) script. The referenced script is Copyright (c) 2012 Sungeon K. Jeon and licensed under the MIT license.
+GCSend is heavily based on the [`simple_stream.py`](https://github.com/grbl/grbl/blob/master/doc/script/simple_stream.py) script. The referenced script is Copyright (c) 2012 Sungeon K. Jeon and licensed under the MIT license.

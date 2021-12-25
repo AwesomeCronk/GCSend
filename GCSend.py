@@ -5,8 +5,7 @@ import time, argparse, serial
 def getArgs():
     parser = argparse.ArgumentParser(
         prog='GCSend',
-        description='A command line GCode sender for GRBL machines',
-        epilog='See https://github.com/AwesomeCronk/GCSend for help'
+        description='A command line GCode sender for GRBL machines'
     )
     parser.add_argument(
         'port',
@@ -50,12 +49,12 @@ if __name__ == '__main__':
     print(dir(args))
 
     def debug(level, *msg, **otherArgs):
-        if level >= args.verbosity:
+        if args.verbosity >= level:
             print(*msg, **otherArgs)
 
-    debug(2, 'file: {}'.format(args.file))
-    debug(2, 'port: {}'.format(args.port))
-    debug(2, 'baud: {}'.format(args.baud))
+    debug(1, 'file: {}'.format(args.file))
+    debug(1, 'port: {}'.format(args.port))
+    debug(1, 'baud: {}'.format(args.baud))
     debug(2, 'verbosity: {}'.format(args.verbosity))
     debug(2, 'wait-to-exit: {}'.format(args.wait_to_exit))
     
@@ -73,8 +72,11 @@ if __name__ == '__main__':
             machine.write(commandToSend.encode('utf-8'))    # Send gcode command
             machine.write(b'\n')    # Send newline to signal end of command
 
-            response = machine.readline()    # Get reponse
+            response = machine.readline().decode('utf-8')[0:-2]    # Get reponse
             debug(1, 'Receive: {}'.format(repr(response)))
+            if 'error' in response:
+                debug(0, 'GRBL returned error {}'.format(response.split(';')[1]))
+                break
 
         if args.wait_to_exit:
             input('Press enter to close port and exit')
