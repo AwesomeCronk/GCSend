@@ -46,7 +46,6 @@ def initGRBL(machine):
 
 if __name__ == '__main__':
     args = getArgs()
-    print(dir(args))
 
     def debug(level, *msg, **otherArgs):
         if args.verbosity >= level:
@@ -57,7 +56,7 @@ if __name__ == '__main__':
     debug(1, 'baud: {}'.format(args.baud))
     debug(2, 'verbosity: {}'.format(args.verbosity))
     debug(2, 'wait-to-exit: {}'.format(args.wait_to_exit))
-    
+    debug(1, '')    # Blank line
 
     with open(args.file, 'r') as file:
         gcodeText = file.read()

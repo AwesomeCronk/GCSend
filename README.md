@@ -5,19 +5,26 @@ GCSend is a command-line GCode sender for GRBL CNC machines. Compatibility with 
 GCSend is intended for Linux, but should be easily portable to Windows (i.e. install where you like, then create a shortcut that is on path or add the installation directory to path.)
 
 ```bash
-cd /usr/local/bin   # installation directory can be changed
+cd /usr/local/bin   # Installation directory can be changed
 sudo git clone https://github.com/AwesomeCronk/GCSend
-sudo chmod 775 GCSend/*
+sudo chmod 775 GCSend/GCSend.py
 sudo ln -s /usr/local/bin/GCSend/GCSend.py /usr/local/bin/gcsend
 ```
 If your user is not a member of the `dialout` group, you will need to run GCSend as `sudo` to use USB/serial ports. To add yourself to `dialout`, run the following command and then restart your computer:
 ```bash
 sudo usermod -a -G dialout $whoami
 ```
+## Updating
+To update, just pull the latest version from GitHub:
+```bash
+cd /usr/local/bin/GCSend    # Or wherever you installed it to
+sudo git restore *  # Just to avoid errors
+sudo git pull
+```
 
-### Dependencies
+## Dependencies
 * Python 3 (Developed on 3.8.10. Compatibility with other versions not guaranteed.)
-* `pySerial` module
+* `pySerial` module (installed via `pip`)
 
 # Usage
 `usage: GCSend [-h] [--baud BAUD] [--verbosity VERBOSITY] [--wait-to-exit] port file`
