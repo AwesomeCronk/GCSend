@@ -27,21 +27,20 @@ sudo git pull
 * `pySerial` module (installed via `pip`)
 
 # Usage
-`usage: GCSend [-h] [--baud BAUD] [--verbosity VERBOSITY] [--wait-to-exit] port file`
-
-A command line GCode sender for GRBL machines
+`usage: GCSend [-h] [--file FILE] [--baud BAUD] [--verbosity VERBOSITY] [--quit-at-end] port`
 
 positional arguments:
   `port`                  port the machine is connected to
-  `file`                  file to be run
 
 optional arguments:
-  `-h, --help`            show this help message and exit
-  `--baud BAUD, -b BAUD`  baud rate to use
-  `--verbosity VERBOSITY, -v VERBOSITY`
+  `-h`, `--help`            show this help message and exit
+  `--file FILE`, `-f FILE`  file to be run (default stdin)
+  `--baud BAUD`, `-b BAUD`  baud rate to use (default 115200)
+  `--verbosity VERBOSITY`, `-v VERBOSITY`
                         set verbosity
-  `--wait-to-exit, -w`    wait for user confirmation before closing the port and exiting
+  `--quit-at-end`, `-q`     close the port and quit without user confirmation
 
+At any time you can press Ctrl + C to send an E-Stop signal to the machine.
 
 # Credits
-GCSend is heavily based on the [`simple_stream.py`](https://github.com/grbl/grbl/blob/master/doc/script/simple_stream.py) script. The referenced script is Copyright (c) 2012 Sungeon K. Jeon and licensed under the MIT license.
+GCSend is heavily based on the [simple_stream.py](https://github.com/grbl/grbl/blob/master/doc/script/simple_stream.py) script. The referenced script is Copyright (c) 2012 Sungeon K. Jeon and licensed under the MIT license.
